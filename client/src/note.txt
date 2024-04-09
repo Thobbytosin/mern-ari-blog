@@ -1,0 +1,9 @@
+git init
+git add .
+git commit -m "[notes]"
+
+//// Create repository pon Github
+
+SECTIONS
+1. INSTALL REACT AND TAILWIND CSS (PROJECT SETUP) 
+2. CREATE PAGES AND ROUTES
