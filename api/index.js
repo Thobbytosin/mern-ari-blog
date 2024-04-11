@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import userRouter from "./routes/user.route.js";
 
 dotenv.config();
 
@@ -15,10 +16,11 @@ mongoose
 
 const app = express();
 
+// app.use(express.json());
+
 app.listen(3000, () => {
   console.log("Server is running on port 3000!!");
 });
 
-// gabrieltobiloba11
-// cH2wuMQg5EZwfb8I
-// mongodb+srv://gabrieltobiloba11:cH2wuMQg5EZwfb8I@mern-ari-blog.24ix8qn.mongodb.net/?retryWrites=true&w=majority&appName=mern-ari-blog
+// ROUTES
+app.use("/api/user", userRouter);
