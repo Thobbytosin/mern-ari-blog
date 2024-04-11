@@ -5,11 +5,15 @@ git commit -m "[notes]"
 //// Create repository pon Github
 
 * to use .env in mongodb, install - npm i dotenv
+* app.use(express.json()); allows json as input for the BACKEND
+* npm i bcryptjs
+
 SECTIONS
 1. INSTALL REACT AND TAILWIND CSS (PROJECT SETUP) 
 2. CREATE PAGES AND ROUTES
 3. CREATE HEADER COOMPONENT
 4. CREATE SERVER (BACKEND)
-5. CONNECT TO DATABASE
-6. CREATE USER MODEL
-7. CREATE A TEST API ROUTE
+5. CONNECT TO DATABASE (BACKEND)
+6. CREATE USER MODEL (BACKEND)
+7. CREATE A TEST API ROUTE (BACKEND)
+8. CREATE SIGN UP ROUTE (BACKEND)
