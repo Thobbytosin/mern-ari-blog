@@ -35,7 +35,6 @@ const SignUp = () => {
       if (data.success === false) {
         setLoading(false);
         return setErrorMessage(data.message);
-        // return setLoading(false);
       }
       if (res.ok) {
         setTimeout(() => {
