@@ -9,12 +9,13 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
 import { FaMoon } from "react-icons/fa";
+import styles from "../../styles";
 
 const Header = () => {
   const path = useLocation().pathname;
   return (
-    <div>
-      <Navbar className=" border-b-2 font-poppins">
+    <div className={`border-b-2  ${styles.padding}`}>
+      <Navbar className=" font-poppins">
         <Link
           to={"/"}
           className=" self-center whitespace-nowrap text-gradient font-semibold font-poppins text-lg"
