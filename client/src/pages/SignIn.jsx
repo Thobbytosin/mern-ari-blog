@@ -10,6 +10,7 @@ import {
   signInStart,
   signInSuccess,
 } from "../redux/user/userSlice";
+import OAuth from "../components/OAuth";
 
 const SignIn = () => {
   const dispatch = useDispatch();
@@ -106,6 +107,7 @@ const SignIn = () => {
               )}
             </Button>
           </form>
+          <OAuth />
           <div className=" mt-4">
             <span>{`Don't have an account?`}</span>
             <Link to={"/sign-up"} className="text-green-500 ml-1">
