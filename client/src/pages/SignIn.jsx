@@ -1,9 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Button, Label, TextInput, Alert, Spinner } from "flowbite-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "../styles";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  pageDefault,
   signInFailure,
   signInStart,
   signInSuccess,
@@ -14,6 +16,10 @@ const SignIn = () => {
   const [formData, setFormData] = useState({});
   const navigate = useNavigate();
   const { loading, error } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    dispatch(pageDefault());
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
