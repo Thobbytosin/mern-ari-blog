@@ -4,6 +4,12 @@
 @tailwind components;
 @tailwind utilities;
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 .text-gradient {
   background: linear-gradient(90deg, #022f40, #0d687e);
   -webkit-background-clip: text;
