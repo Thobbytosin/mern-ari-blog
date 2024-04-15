@@ -11,7 +11,7 @@ input::-webkit-inner-spin-button {
 }
 
 .text-gradient {
-  background: linear-gradient(90deg, #022f40, #0d687e);
+  background: linear-gradient(90deg, #055775, #0f4c5c);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
