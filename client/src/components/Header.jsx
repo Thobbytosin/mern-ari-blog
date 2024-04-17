@@ -1,27 +1,46 @@
+/* eslint-disable react/no-unescaped-entities */
 import {
   Avatar,
   Button,
   Dropdown,
-  DropdownDivider,
-  DropdownItem,
+  Modal,
   Navbar,
   NavbarLink,
   NavbarToggle,
   TextInput,
 } from "flowbite-react";
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { FaMoon, FaSun } from "react-icons/fa";
 import styles from "../styles";
 import { useSelector, useDispatch } from "react-redux";
 import { themeToggler } from "../redux/theme/themeSlice";
+import { signOutSuccess } from "../redux/user/userSlice";
 
 const Header = () => {
   const { currentUser } = useSelector((state) => state.user);
   const { theme } = useSelector((state) => state.theme);
   const path = useLocation().pathname;
   const dispatch = useDispatch();
+  const [showSignOutModal, setShowSignOutmodal] = useState(null);
+
+  const handleSignoutUser = async () => {
+    try {
+      const res = await fetch("/api/user/signout", {
+        method: "GET",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        dispatch(signOutSuccess());
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   return (
     <div className={`border-b-2  ${styles.padding}`}>
@@ -75,7 +94,9 @@ const Header = () => {
                 <Link to={"/dashboard?tab=profile"}>Profile</Link>
               </Dropdown.Item>
               <Dropdown.Divider />
-              <Dropdown.Item>Sign Out</Dropdown.Item>
+              <Dropdown.Item>
+                <Link onClick={() => setShowSignOutmodal(true)}>Sign Out</Link>
+              </Dropdown.Item>
             </Dropdown>
           ) : (
             <Link to={"/sign-in"}>
@@ -110,6 +131,36 @@ const Header = () => {
           </NavbarLink>
         </Navbar.Collapse>
       </Navbar>
+
+      {showSignOutModal && (
+        <Modal
+          show={showSignOutModal}
+          onClose={() => setShowSignOutmodal(false)}
+          size="md"
+          popup
+        >
+          <Modal.Header />
+          <Modal.Body>
+            <div className="text-center">
+              <HiOutlineExclamationCircle className=" h-12 w-12 mx-auto mb-4 text-gray-400 dark:text-gray-200" />
+              <h3 className=" text-lg font-poppins text-gray-600 dark:text-gray-400 mb-5 ">
+                Are you sure you want to signout?
+              </h3>
+              <div className=" flex items-center gap-4  w-full justify-center">
+                <Button
+                  onClick={handleSignoutUser}
+                  gradientDuoTone={"greenToBlue"}
+                >
+                  Yes, I'm sure
+                </Button>
+                <Button onClick={() => setShowSignOutmodal(false)} color="gray">
+                  No, Cancel
+                </Button>
+              </div>
+            </div>
+          </Modal.Body>
+        </Modal>
+      )}
     </div>
   );
 };
