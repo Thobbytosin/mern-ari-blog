@@ -1,5 +1,13 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Alert, Button, Progress, Spinner, TextInput } from "flowbite-react";
+import {
+  Alert,
+  Button,
+  Modal,
+  Progress,
+  Spinner,
+  TextInput,
+} from "flowbite-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -9,13 +17,16 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../firebase";
-import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import {
+  deleteUserFailure,
+  deleteUserStart,
+  deleteUserSuccess,
   updateFailure,
   updateStart,
   updateSuccess,
 } from "../redux/user/userSlice";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 const DashProfile = () => {
   const { currentUser, loading, error } = useSelector((state) => state.user);
@@ -29,6 +40,8 @@ const DashProfile = () => {
   const [updateUserSuccess, setUpdateUserSucess] = useState(null);
   const [updateUserFailure, setUpdateUserFailure] = useState(null);
   const [imageUploading, setImageUploading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [deleteUserFail, setDeleteUserFail] = useState(null);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -126,8 +139,28 @@ const DashProfile = () => {
     }
   };
 
+  const handleDeleteUser = async () => {
+    setShowModal(false);
+    try {
+      dispatch(deleteUserStart());
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        dispatch(deleteUserFailure(data.message));
+        setDeleteUserFail(data.message);
+      } else {
+        setDeleteUserFail(null);
+        dispatch(deleteUserSuccess(data));
+      }
+    } catch (error) {
+      dispatch(deleteUserFailure(error.message));
+    }
+  };
+
   return (
-    <div className="max-w-lg mx-auto w-full">
+    <div className="max-w-lg mx-auto w-full font-poppins">
       <h1 className=" text-center font-semibold my-7 text-3xl">Profile</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <input
@@ -199,13 +232,50 @@ const DashProfile = () => {
         </Button>
       </form>
       <div className=" flex justify-between my-4">
-        <span className=" text-red-600 cursor-pointer text-sm ">
-          Delete Account
+        <span
+          onClick={() => setShowModal(true)}
+          className=" text-red-600 cursor-pointer text-sm "
+        >
+          {loading ? (
+            <span>
+              <Spinner size="sm" />
+            </span>
+          ) : (
+            "Delete Account"
+          )}
         </span>
         <span className=" text-red-600 cursor-pointer text-sm ">Sign out</span>
       </div>
       {updateUserSuccess && <Alert color="success">{updateUserSuccess}</Alert>}
       {updateUserFailure && <Alert color="failure">{updateUserFailure}</Alert>}
+      {deleteUserFail && <Alert color="failure">{deleteUserFail}</Alert>}
+
+      {showModal && (
+        <Modal
+          show={showModal}
+          onClose={() => setShowModal(false)}
+          size="md"
+          popup
+        >
+          <Modal.Header />
+          <Modal.Body>
+            <div className="text-center">
+              <HiOutlineExclamationCircle className=" h-12 w-12 mx-auto mb-4 text-gray-400 dark:text-gray-200" />
+              <h3 className=" text-lg font-poppins text-gray-600 dark:text-gray-400 mb-5 ">
+                Are you sure you want to delete your account?
+              </h3>
+              <div className=" flex items-center gap-4  w-full justify-center">
+                <Button onClick={handleDeleteUser} color="failure">
+                  Yes, I'm sure
+                </Button>
+                <Button onClick={() => setShowModal(false)} color="gray">
+                  No, Cancel
+                </Button>
+              </div>
+            </div>
+          </Modal.Body>
+        </Modal>
+      )}
     </div>
   );
 };
