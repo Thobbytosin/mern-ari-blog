@@ -22,6 +22,7 @@ import {
   deleteUserFailure,
   deleteUserStart,
   deleteUserSuccess,
+  signOutSuccess,
   updateFailure,
   updateStart,
   updateSuccess,
@@ -42,6 +43,7 @@ const DashProfile = () => {
   const [imageUploading, setImageUploading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [deleteUserFail, setDeleteUserFail] = useState(null);
+  const [showSignOutModal, setShowSignOutmodal] = useState(null);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -159,6 +161,22 @@ const DashProfile = () => {
     }
   };
 
+  const handleSignoutUser = async () => {
+    try {
+      const res = await fetch("/api/user/signout", {
+        method: "GET",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        dispatch(signOutSuccess());
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <div className="max-w-lg mx-auto w-full font-poppins">
       <h1 className=" text-center font-semibold my-7 text-3xl">Profile</h1>
@@ -244,7 +262,18 @@ const DashProfile = () => {
             "Delete Account"
           )}
         </span>
-        <span className=" text-red-600 cursor-pointer text-sm ">Sign out</span>
+        <span
+          onClick={() => setShowSignOutmodal(true)}
+          className=" text-red-600 cursor-pointer text-sm "
+        >
+          {loading ? (
+            <span>
+              <Spinner size="sm" />
+            </span>
+          ) : (
+            "Sign Out"
+          )}
+        </span>
       </div>
       {updateUserSuccess && <Alert color="success">{updateUserSuccess}</Alert>}
       {updateUserFailure && <Alert color="failure">{updateUserFailure}</Alert>}
@@ -269,6 +298,35 @@ const DashProfile = () => {
                   Yes, I'm sure
                 </Button>
                 <Button onClick={() => setShowModal(false)} color="gray">
+                  No, Cancel
+                </Button>
+              </div>
+            </div>
+          </Modal.Body>
+        </Modal>
+      )}
+      {showSignOutModal && (
+        <Modal
+          show={showSignOutModal}
+          onClose={() => setShowSignOutmodal(false)}
+          size="md"
+          popup
+        >
+          <Modal.Header />
+          <Modal.Body>
+            <div className="text-center">
+              <HiOutlineExclamationCircle className=" h-12 w-12 mx-auto mb-4 text-gray-400 dark:text-gray-200" />
+              <h3 className=" text-lg font-poppins text-gray-600 dark:text-gray-400 mb-5 ">
+                Are you sure you want to signout?
+              </h3>
+              <div className=" flex items-center gap-4  w-full justify-center">
+                <Button
+                  onClick={handleSignoutUser}
+                  gradientDuoTone={"greenToBlue"}
+                >
+                  Yes, I'm sure
+                </Button>
+                <Button onClick={() => setShowSignOutmodal(false)} color="gray">
                   No, Cancel
                 </Button>
               </div>
