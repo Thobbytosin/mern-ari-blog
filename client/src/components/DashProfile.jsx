@@ -88,6 +88,7 @@ const DashProfile = () => {
           setFormData({ ...formData, avatar: downloadURL });
           setImageUploading(false);
           setUpdateUserFailure(null);
+          setUpdateUserSucess("Profile updated succesfully");
         });
       }
     );
@@ -133,7 +134,7 @@ const DashProfile = () => {
         setUpdateUserFailure(data.message);
         dispatch(updateFailure(data.message));
       } else {
-        setUpdateUserSucess("User credentials updated succesfully");
+        setUpdateUserSucess("Profile updated succesfully");
         dispatch(updateSuccess(data));
       }
     } catch (error) {
