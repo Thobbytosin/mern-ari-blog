@@ -10,7 +10,7 @@ import {
   TextInput,
 } from "flowbite-react";
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { FaMoon, FaSun } from "react-icons/fa";
@@ -25,6 +25,7 @@ const Header = () => {
   const path = useLocation().pathname;
   const dispatch = useDispatch();
   const [showSignOutModal, setShowSignOutmodal] = useState(null);
+  const navigate = useNavigate();
 
   const handleSignoutUser = async () => {
     try {
@@ -35,7 +36,9 @@ const Header = () => {
       if (!res.ok) {
         console.log(data.message);
       } else {
+        setShowSignOutmodal(null);
         dispatch(signOutSuccess());
+        navigate("/sign-in");
       }
     } catch (error) {
       console.log(error.message);

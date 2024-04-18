@@ -28,6 +28,8 @@ import {
   updateSuccess,
 } from "../redux/user/userSlice";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { Link } from "react-router-dom";
+import styles from "../styles";
 
 const DashProfile = () => {
   const { currentUser, loading, error } = useSelector((state) => state.user);
@@ -179,7 +181,7 @@ const DashProfile = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto w-full font-poppins">
+    <div className={`${styles.padding} max-w-lg mx-auto w-full font-poppins`}>
       <h1 className=" text-center font-semibold my-7 text-3xl">Profile</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <input
@@ -249,6 +251,11 @@ const DashProfile = () => {
             "Update"
           )}
         </Button>
+        {currentUser.isAdmin && (
+          <Button gradientDuoTone={"greenToBlue"}>
+            <Link to={"/create-post"}>Create Post</Link>
+          </Button>
+        )}
       </form>
       <div className=" flex justify-between my-4">
         <span

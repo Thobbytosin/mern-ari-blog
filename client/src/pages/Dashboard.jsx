@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import DashSidebar from "../components/DashSidebar";
 import DashProfile from "../components/DashProfile";
+import styles from "../styles";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -13,7 +14,9 @@ const Dashboard = () => {
     setTab(tabFromUrl);
   }, [location.search]);
   return (
-    <div className=" min-h-screen flex flex-col md:flex-row mb-10">
+    <div
+      className={`${styles.padding} min-h-screen flex flex-col md:flex-row mb-10`}
+    >
       <div className="">
         {/* DASH SIDEBAR */}
         <DashSidebar />

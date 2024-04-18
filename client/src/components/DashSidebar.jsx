@@ -1,13 +1,13 @@
 /* eslint-disable react/no-unescaped-entities */
 import { Button, Modal, Sidebar } from "flowbite-react";
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   HiUser,
   HiArrowRight,
   HiOutlineExclamationCircle,
 } from "react-icons/hi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signOutSuccess } from "../redux/user/userSlice";
 
 const DashSidebar = () => {
@@ -15,6 +15,8 @@ const DashSidebar = () => {
   const [tab, setTab] = useState("");
   const [showSignOutModal, setShowSignOutmodal] = useState(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
@@ -31,7 +33,9 @@ const DashSidebar = () => {
       if (!res.ok) {
         console.log(data.message);
       } else {
+        setShowSignOutmodal(null);
         dispatch(signOutSuccess());
+        navigate("/sign-in");
       }
     } catch (error) {
       console.log(error.message);
@@ -47,8 +51,8 @@ const DashSidebar = () => {
               <Sidebar.Item
                 active={tab === "profile"}
                 icon={HiUser}
-                label={"User"}
-                labelColor="dark"
+                label={currentUser.isAdmin ? "Admin" : "User"}
+                labelColor={currentUser.isAdmin ? "success" : "dark"}
                 as="div"
               >
                 Profile

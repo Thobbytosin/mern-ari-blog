@@ -4,6 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  height: 100vh;
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -15,4 +19,12 @@ input::-webkit-inner-spin-button {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+.ql-editor {
+  font-size: 1.05rem;
+}
+
+.ql-toolbar {
+  text-align: left;
 }
