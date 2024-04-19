@@ -12,6 +12,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { signOutSuccess } from "../redux/user/userSlice";
 
 const DashSidebar = () => {
+  console.log(now);
+  console.log(oneMonthAgo);
   const location = useLocation();
   const [tab, setTab] = useState("");
   const [showSignOutModal, setShowSignOutmodal] = useState(null);

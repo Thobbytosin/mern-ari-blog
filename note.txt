@@ -45,4 +45,16 @@ SECTIONS
 44. ADD CREATE POST API ROUTE
 45. COMPLETE CREATE POST UPLOAD IMAGE FUNCTIONALITY
 46. COMPLETE CREATE POST PAGE FUNCTIONALITY (publish)
-47. ADD POSTS SECTION TO DASHBOARD SIDEBAR
+47. ADD POSTS SECTION TO DASHBOARD 
+48. CREATE GET POSTS API ROUTE
+
+SORTING
+const points = [40, 100, 1, 5, 25, 10];
+  points.sort(function (a, b) {
+    return a - b;
+  });
+  console.log(points);
+function(a, b){return a - b}
+Negative Value ( a < b) => a will be placed before b
+zero value (a == b) => No Change
+Positive Value (a > b ) => a will be placed after b
