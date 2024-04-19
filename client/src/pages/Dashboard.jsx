@@ -16,14 +16,16 @@ const Dashboard = () => {
   }, [location.search]);
   return (
     <div
-      className={`${styles.padding} min-h-screen flex flex-col md:flex-row mb-10`}
+      className={`${styles.padding} min-h-screen  flex flex-col gap-8 md:flex-row mb-10`}
     >
-      <div className="">
+      <div className="mb-4 sm:mb-0">
         {/* DASH SIDEBAR */}
         <DashSidebar />
       </div>
-      {tab === "profile" && <DashProfile />}
-      {tab === "posts" && <DashPosts />}
+      <div className="mx-auto w-full">
+        {tab === "profile" && <DashProfile />}
+        {tab === "posts" && <DashPosts />}
+      </div>
     </div>
   );
 };
