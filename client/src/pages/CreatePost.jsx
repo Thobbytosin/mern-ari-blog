@@ -12,6 +12,7 @@ import {
 import { app } from "../firebase";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import { useNavigate } from "react-router-dom";
 
 const CreatePost = () => {
   const [file, setFile] = useState(null);
@@ -19,7 +20,10 @@ const CreatePost = () => {
   const [fileUploadError, setFileUploadError] = useState(null);
   const [fileUploadSuccess, setFileUploadSuccess] = useState(null);
   const [formData, setFormData] = useState({});
-  console.log(file);
+  const [publishError, setPublishError] = useState(null);
+  const [publishSuccess, setPublishSuccess] = useState(null);
+  const navigate = useNavigate();
+  // console.log(file);
   // console.log(`progress:${fileUploadProgress}%`);
   // console.log(`Error: ${fileUploadError}`);
   // console.log(`success: ${fileUploadSuccess}`);
@@ -66,12 +70,40 @@ const CreatePost = () => {
       setFileUploadError("Image Upload failed");
     }
   };
+
+  const handlePublish = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch("/api/post/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        setPublishError(data.message);
+        setPublishSuccess(null);
+        return;
+      } else {
+        setPublishError(null);
+        setPublishSuccess("Post Created Successfully");
+        setTimeout(() => {
+          navigate(`/post/${data.slug}`);
+        }, 2000);
+      }
+    } catch (error) {
+      setPublishError("Something went wrong");
+    }
+  };
   return (
     <div
       className={`${styles.padding} min-h-screen max-w-3xl mx-auto text-center font-poppins mb-12`}
     >
       <h1 className=" text-center font-semibold my-7 text-3xl">Create Post</h1>
-      <form className=" flex flex-col gap-4">
+      <form onSubmit={handlePublish} className=" flex flex-col gap-4 mb-4">
         <div className=" flex flex-col sm:flex-row gap-4">
           <TextInput
             type="text"
@@ -79,8 +111,15 @@ const CreatePost = () => {
             id="title"
             required
             className=" flex-1"
+            onChange={(e) =>
+              setFormData({ ...formData, title: e.target.value })
+            }
           />
-          <Select>
+          <Select
+            onChange={(e) =>
+              setFormData({ ...formData, category: e.target.value })
+            }
+          >
             <option value="uncategorized">Select a category</option>
             <option value="javascript">JavaScript</option>
             <option value="reactjs">React.js</option>
@@ -128,11 +167,14 @@ const CreatePost = () => {
           theme="snow"
           placeholder="Write something.."
           className=" h-72 mb-12"
+          onChange={(value) => setFormData({ ...formData, content: value })}
         />
         <Button type="submit" gradientDuoTone={"greenToBlue"} size="sm">
           Publish
         </Button>
       </form>
+      {publishError && <Alert color="failure">{publishError}</Alert>}
+      {publishSuccess && <Alert color="success">{publishSuccess}</Alert>}
     </div>
   );
 };
