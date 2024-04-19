@@ -6,6 +6,7 @@ import {
   HiUser,
   HiArrowRight,
   HiOutlineExclamationCircle,
+  HiDocumentText,
 } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { signOutSuccess } from "../redux/user/userSlice";
@@ -58,6 +59,18 @@ const DashSidebar = () => {
                 Profile
               </Sidebar.Item>
             </Link>
+            {currentUser.isAdmin && (
+              <Link to={"/dashboard?tab=posts"}>
+                <Sidebar.Item
+                  active={tab === "posts"}
+                  icon={HiDocumentText}
+                  as="div"
+                >
+                  Posts
+                </Sidebar.Item>
+              </Link>
+            )}
+
             <Link
               onClick={() => setShowSignOutmodal(true)}
               className=" cursor-pointer"
