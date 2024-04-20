@@ -1,10 +1,15 @@
 import express from "express";
 import { verifyUser } from "../utils/verifyUser.js";
-import { createPost, getPosts } from "../controllers/posts.controller.js";
+import {
+  createPost,
+  deletePost,
+  getPosts,
+} from "../controllers/posts.controller.js";
 
 const router = express.Router();
 
 router.post("/create", verifyUser, createPost);
-router.get("/getPosts", getPosts);
+router.get("/getPost", getPosts);
+router.delete("/deletePost/:postId/:userId", verifyUser, deletePost);
 
 export default router;

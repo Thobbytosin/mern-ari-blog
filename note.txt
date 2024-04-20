@@ -8,6 +8,18 @@ git commit -m "[notes]"
 * app.use(express.json()); allows json as input for the BACKEND
 * npm i bcryptjs
 * authenticate users with jwt(npm i jsonwebtoken)
+* react-quill for rich text editor
+
+SORTING
+const points = [40, 100, 1, 5, 25, 10];
+  points.sort(function (a, b) {
+    return a - b;
+  });
+  console.log(points);
+function(a, b){return a - b}
+Negative Value ( a < b) => a will be placed before b
+zero value (a == b) => No Change
+Positive Value (a > b ) => a will be placed after b
 
 SECTIONS
 1. INSTALL REACT AND TAILWIND CSS (PROJECT SETUP) 
@@ -49,14 +61,5 @@ SECTIONS
 48. CREATE GET POSTS API ROUTE
 49. SHOW USER POSTS IN DASHBOARD
 50. ADD SHOW MORE POSTS FUNCTIONALITY TO DASHBOARD
+51. ADD DELETE POST FUNCTIONALITY TO DASHBOARD
 
-SORTING
-const points = [40, 100, 1, 5, 25, 10];
-  points.sort(function (a, b) {
-    return a - b;
-  });
-  console.log(points);
-function(a, b){return a - b}
-Negative Value ( a < b) => a will be placed before b
-zero value (a == b) => No Change
-Positive Value (a > b ) => a will be placed after b

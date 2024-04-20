@@ -1,17 +1,21 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { Button, Table } from "flowbite-react";
+import { Alert, Button, Modal, Table, Toast } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { HiOutlineExclamationCircle, HiCheck } from "react-icons/hi";
 
 const DashPosts = () => {
   const { currentUser } = useSelector((state) => state.user);
   const [userPosts, setUserPosts] = useState([]);
   const [showMore, setShowMore] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [postToDeleteId, setPostToDeleteId] = useState("");
+  const [postDeleted, setPostDeleted] = useState(null);
+  // console.log(postToDeleteId);
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await fetch(`/api/post/getPosts?userId=${currentUser._id}`);
+        const res = await fetch(`/api/post/getPost?userId=${currentUser._id}`);
         const data = await res.json();
 
         if (res.ok) {
@@ -32,7 +36,7 @@ const DashPosts = () => {
     try {
       const startIndex = userPosts.length;
       const res = await fetch(
-        `/api/post/getPosts?userId=${currentUser._id}&startIndex=${startIndex}`
+        `/api/post/getPost?userId=${currentUser._id}&startIndex=${startIndex}`
       );
       const data = await res.json();
 
@@ -46,6 +50,33 @@ const DashPosts = () => {
       console.log(error.message);
     }
   };
+
+  const handleDeletePost = async () => {
+    setShowModal(false);
+    try {
+      const res = await fetch(
+        `/api/post/deletePost/${postToDeleteId}/${currentUser._id}`,
+        {
+          method: "DELETE",
+        }
+      );
+      const data = await res.json();
+      // console.log(res);
+
+      if (!res.ok) {
+        console.log(data.message);
+        setPostDeleted(false);
+      } else {
+        setPostDeleted(data);
+        setUserPosts((prev) =>
+          prev.filter((post) => post._id !== postToDeleteId)
+        );
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <div className="table-auto overflow-x-auto sm:overflow-x-auto  w-full  font-poppins scrollbar scrollbar-track-slate-100 dark:scrollbar-track-slate-700 scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-800">
       {currentUser.isAdmin && userPosts?.length > 0 ? (
@@ -82,7 +113,14 @@ const DashPosts = () => {
                   </Table.Cell>
                   <Table.Cell>{post.category}</Table.Cell>
                   <Table.Cell>
-                    <span className=" font-medium text-red-500 hover:opacity-55 cursor-pointer">
+                    <span
+                      onClick={() => {
+                        setShowModal(true);
+                        setPostDeleted(false);
+                        setPostToDeleteId(post._id);
+                      }}
+                      className=" font-medium text-red-500 hover:opacity-55 cursor-pointer"
+                    >
                       Delete
                     </span>
                   </Table.Cell>
@@ -108,6 +146,37 @@ const DashPosts = () => {
         >
           Show More
         </button>
+      )}
+      {showModal && (
+        <Modal
+          show={showModal}
+          onClose={() => setShowModal(false)}
+          size="md"
+          popup
+        >
+          <Modal.Header />
+          <Modal.Body>
+            <div className="text-center">
+              <HiOutlineExclamationCircle className=" h-12 w-12 mx-auto mb-4 text-gray-400 dark:text-gray-200" />
+              <h3 className=" text-lg font-poppins text-gray-600 dark:text-gray-400 mb-5 ">
+                Are you sure you want to delete this post?
+              </h3>
+              <div className=" flex items-center gap-4  w-full justify-center">
+                <Button onClick={handleDeletePost} color="failure">
+                  Yes, I'm sure
+                </Button>
+                <Button onClick={() => setShowModal(false)} color="gray">
+                  No, Cancel
+                </Button>
+              </div>
+            </div>
+          </Modal.Body>
+        </Modal>
+      )}
+      {postDeleted && (
+        <Alert color="success" size="sm">
+          <div className="ml-3 text-sm font-normal">{postDeleted}.</div>
+        </Alert>
       )}
     </div>
   );
