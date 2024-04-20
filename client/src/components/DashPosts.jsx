@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Table } from "flowbite-react";
+import { Button, Table } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const DashPosts = () => {
   const { currentUser } = useSelector((state) => state.user);
   const [userPosts, setUserPosts] = useState([]);
-  console.log(userPosts);
+  const [showMore, setShowMore] = useState(true);
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -16,6 +16,9 @@ const DashPosts = () => {
 
         if (res.ok) {
           setUserPosts(data.posts);
+          if (data.posts.length < 9) {
+            setShowMore(false);
+          }
         }
       } catch (error) {
         console.log(error.message);
@@ -24,8 +27,27 @@ const DashPosts = () => {
 
     currentUser.isAdmin && fetchPosts();
   }, [currentUser._id]);
+
+  const handleShowMore = async () => {
+    try {
+      const startIndex = userPosts.length;
+      const res = await fetch(
+        `/api/post/getPosts?userId=${currentUser._id}&startIndex=${startIndex}`
+      );
+      const data = await res.json();
+
+      if (res.ok) {
+        setUserPosts((prev) => [...prev, data.posts]);
+        if (data.posts.length < 9) {
+          setShowMore(false);
+        }
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   return (
-    <div className="table-auto overflow-x-scroll  w-full  font-poppins scrollbar scrollbar-track-slate-100 dark:scrollbar-track-slate-700 scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-800">
+    <div className="table-auto overflow-x-auto sm:overflow-x-auto  w-full  font-poppins scrollbar scrollbar-track-slate-100 dark:scrollbar-track-slate-700 scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-800">
       {currentUser.isAdmin && userPosts?.length > 0 ? (
         <>
           <Table hoverable className=" shadow-md">
@@ -78,6 +100,14 @@ const DashPosts = () => {
         </>
       ) : (
         <p>No Posts yet</p>
+      )}
+      {showMore && (
+        <button
+          onClick={handleShowMore}
+          className=" w-full text-center my-4 text-sm text-teal-600 font-medium hover:text-gray-400"
+        >
+          Show More
+        </button>
       )}
     </div>
   );
