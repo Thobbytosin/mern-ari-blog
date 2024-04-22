@@ -72,11 +72,39 @@ export const getPosts = async (req, res, next) => {
 
 export const deletePost = async (req, res, next) => {
   if (!req.user.isAdmin || req.user.id !== req.params.userId)
-    return next(errorHandler(403, "Permission denied"));
+    return next(errorHandler(403, "Permission denied to delete this post"));
 
   try {
     await Post.findByIdAndDelete(req.params.postId);
     res.status(200).json("Post deleted");
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updatePost = async (req, res, next) => {
+  if (!req.user.isAdmin || req.user.id !== req.params.userId)
+    return next(errorHandler(403, "Access denied to update this post"));
+
+  try {
+    const updatePost = await Post.findByIdAndUpdate(
+      req.params.postId,
+      {
+        $set: {
+          title: req.body.title,
+          category: req.body.category,
+          image: req.body.image,
+          content: req.body.content,
+          slug: req.body.title
+            .split(" ")
+            .join("-")
+            .toLowerCase()
+            .replace(/[^a-zA-Z0-9-]/g, ""),
+        },
+      },
+      { new: true }
+    );
+    res.status(200).json(updatePost);
   } catch (error) {
     next(error);
   }

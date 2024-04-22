@@ -11,6 +11,7 @@ import Footer from "./components/Footer";
 import PrivateRoute from "./components/PrivateRoute";
 import CreatePost from "./pages/CreatePost";
 import AdminPrivateRoute from "./components/AdminPrivateRoute";
+import UpdatePost from "./pages/UpdatePost";
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
         <Route path="/sign-up" element={<SignUp />} />
         <Route element={<AdminPrivateRoute />}>
           <Route path="/create-post" element={<CreatePost />} />
+          <Route path="update-post/:postId" element={<UpdatePost />} />
         </Route>
       </Routes>
       <Footer />

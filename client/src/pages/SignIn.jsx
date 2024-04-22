@@ -43,7 +43,7 @@ const SignIn = () => {
       });
       // console.log(res);
       const data = await res.json();
-      console.log(data);
+
       if (data.success === false) {
         return dispatch(signInFailure(data.message));
       }

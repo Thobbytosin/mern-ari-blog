@@ -174,7 +174,7 @@ const DashPosts = () => {
         </Modal>
       )}
       {postDeleted && (
-        <Alert color="success" size="sm">
+        <Alert color="success" size="sm" className=" my-7">
           <div className="ml-3 text-sm font-normal">{postDeleted}.</div>
         </Alert>
       )}
