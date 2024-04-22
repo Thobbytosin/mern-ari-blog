@@ -8,6 +8,7 @@ const SignUp = () => {
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -32,12 +33,13 @@ const SignUp = () => {
       });
       // console.log(res);
       const data = await res.json();
-      console.log(data);
+
       if (data.success === false) {
         setLoading(false);
         return setErrorMessage(data.message);
       }
       if (res.ok) {
+        setSuccessMessage(data);
         setTimeout(() => {
           navigate("/sign-in");
         }, 2500);
@@ -91,7 +93,12 @@ const SignUp = () => {
                 id="password"
                 onChange={handleChange}
               />
+              <p className=" text-[0.7rem] ">
+                Password must contain at least 8 characters. at least 1
+                Uppercase, 1 Lowercase & 1 number
+              </p>
             </div>
+
             <Button
               gradientDuoTone={"greenToBlue"}
               type="submit"
@@ -114,6 +121,11 @@ const SignUp = () => {
               Sign In
             </Link>
           </div>
+          {successMessage && (
+            <Alert className="mt-5" color="success">
+              {successMessage}
+            </Alert>
+          )}
           {errorMessage && (
             <Alert className="mt-5" color="failure">
               {errorMessage}

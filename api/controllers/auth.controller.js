@@ -18,6 +18,27 @@ export const signup = async (req, res, next) => {
     return next(errorHandler(400, "All fields are required"));
   }
 
+  const hasLowercaseLetter = () => !!password.match(/[a-z]/);
+  const hasUppercaseLetter = () => !!password.match(/[a-z]/);
+  const hasNumber = () => !!password.match(/[0-9]/);
+
+  // Password Test
+  const passwordIsArbitrarilyStrongEnough =
+    hasNumber(password) &&
+    hasUppercaseLetter(password) &&
+    hasLowercaseLetter(password);
+
+  if (password.length < 8)
+    return next(errorHandler(400, "Password must be at least 8 characters"));
+
+  if (!passwordIsArbitrarilyStrongEnough)
+    return next(
+      errorHandler(
+        400,
+        "Password must contain at least one Uppercase letter, one lowercase letter and a number"
+      )
+    );
+
   const cryptedPassword = bcryptjs.hashSync(password, 10);
   try {
     const newUser = new User({
@@ -27,7 +48,7 @@ export const signup = async (req, res, next) => {
     });
     await newUser.save();
 
-    res.status(200).json({ message: "User registered successfully" });
+    res.status(200).json("User registered successfully");
   } catch (err) {
     next(err);
   }

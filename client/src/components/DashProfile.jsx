@@ -193,7 +193,7 @@ const DashProfile = () => {
         />
         <div className="relative w-32 h-32 rounded-full self-center  cursor-pointer shadow-md ">
           <img
-            src={imageFileUrl || currentUser.avatar}
+            src={imageFileUrl || currentUser?.avatar}
             alt="profile_picture"
             className={`w-full h-full rounded-full object-cover border-4 border-teal-500 z-10 ${
               imageFileUploadProgess &&
@@ -221,14 +221,14 @@ const DashProfile = () => {
           type="text"
           id="username"
           placeholder="username"
-          defaultValue={currentUser.username}
+          defaultValue={currentUser?.username}
           onChange={handleChange}
         />
         <TextInput
           type="email"
           id="email"
           placeholder="email"
-          defaultValue={currentUser.email}
+          defaultValue={currentUser?.email}
           onChange={handleChange}
         />
         <TextInput

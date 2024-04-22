@@ -8,7 +8,7 @@ const FooterCom = () => {
   return (
     <Footer
       container
-      className={`${styles.padding} border border-t-8 border-teal-500 font-poppins`}
+      className={`${styles.padding} border border-t-8 border-teal-500 font-poppins mt-10`}
     >
       <div className="w-full">
         <div className=" grid sm:flex justify-between">
