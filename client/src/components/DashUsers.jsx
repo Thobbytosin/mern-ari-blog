@@ -10,9 +10,9 @@ const DashUsers = () => {
   const [users, setUsers] = useState([]);
   const [showMore, setShowMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [postToDeleteId, setPostToDeleteId] = useState("");
-  const [postDeleted, setPostDeleted] = useState(null);
-  // console.log(postToDeleteId);
+  const [userToDeleteId, setUserToDeleteId] = useState("");
+  const [userDeleted, setUserDeleted] = useState(null);
+  // console.log(userToDeleteId);
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -50,24 +50,20 @@ const DashUsers = () => {
     }
   };
 
-  const handleDeletePost = async () => {
+  const handleDeleteUser = async () => {
     setShowModal(false);
     try {
-      const res = await fetch(
-        `/api/post/deletePost/${postToDeleteId}/${currentUser._id}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const res = await fetch(`/api/user/delete/${userToDeleteId}`, {
+        method: "DELETE",
+      });
       const data = await res.json();
-      // console.log(res);
 
       if (!res.ok) {
         console.log(data.message);
-        setPostDeleted(false);
+        setUserDeleted(false);
       } else {
-        setPostDeleted(data);
-        setUsers((prev) => prev.filter((post) => post._id !== postToDeleteId));
+        setUserDeleted(data);
+        setUsers((prev) => prev.filter((user) => user._id !== userToDeleteId));
       }
     } catch (error) {
       console.log(error.message);
@@ -116,8 +112,8 @@ const DashUsers = () => {
                     <span
                       onClick={() => {
                         setShowModal(true);
-                        setPostDeleted(false);
-                        setPostToDeleteId(post._id);
+                        setUserDeleted(false);
+                        setUserToDeleteId(user._id);
                       }}
                       className=" font-medium text-red-500 hover:opacity-55 cursor-pointer"
                     >
@@ -155,7 +151,7 @@ const DashUsers = () => {
                 Are you sure you want to delete this post?
               </h3>
               <div className=" flex items-center gap-4  w-full justify-center">
-                <Button onClick={handleDeletePost} color="failure">
+                <Button onClick={handleDeleteUser} color="failure">
                   Yes, I'm sure
                 </Button>
                 <Button onClick={() => setShowModal(false)} color="gray">
@@ -166,9 +162,9 @@ const DashUsers = () => {
           </Modal.Body>
         </Modal>
       )}
-      {postDeleted && (
+      {userDeleted && (
         <Alert color="success" size="sm" className=" my-7">
-          <div className="ml-3 text-sm font-normal">{postDeleted}.</div>
+          <div className="ml-3 text-sm font-normal">{userDeleted}.</div>
         </Alert>
       )}
     </div>
