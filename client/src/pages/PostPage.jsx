@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { Button, Spinner } from "flowbite-react";
 import styles from "../styles";
 import CallToAction from "../components/CallToAction";
+import CommentSection from "../components/CommentSection";
 
 const PostPage = () => {
   const { postSlug } = useParams();
@@ -16,7 +17,7 @@ const PostPage = () => {
         setLoading(true);
         const res = await fetch(`/api/post/getPost?slug=${postSlug}`);
         const data = await res.json();
-        console.log(data);
+        // console.log(data);
         if (!res.ok) {
           setError(true);
           setLoading(false);
@@ -72,7 +73,11 @@ const PostPage = () => {
         dangerouslySetInnerHTML={{ __html: post && post.content }}
         className=" mt-7 post-content"
       />
-      <CallToAction />
+      <div className=" w-full max-w-4xl mx-auto">
+        <CallToAction />
+      </div>
+
+      <CommentSection postId={post._id} />
     </div>
   );
 };
