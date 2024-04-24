@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Button, Spinner } from "flowbite-react";
 import styles from "../styles";
+import CallToAction from "../components/CallToAction";
 
 const PostPage = () => {
   const { postSlug } = useParams();
@@ -43,7 +44,7 @@ const PostPage = () => {
     );
   return (
     <div
-      className={`min-h-screen ${styles.padding} font-poppins max-w-6xl mx-auto flex flex-col`}
+      className={`min-h-screen ${styles.padding} font-poppins max-w-6xl mx-auto flex flex-col `}
     >
       <h1 className="mt-10 text-center font-semibold text-3xl lg:text-4xl">
         {post && post.title}
@@ -71,6 +72,7 @@ const PostPage = () => {
         dangerouslySetInnerHTML={{ __html: post && post.content }}
         className=" mt-7 post-content"
       />
+      <CallToAction />
     </div>
   );
 };
