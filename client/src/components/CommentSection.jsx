@@ -1,7 +1,7 @@
 import { Alert, Button, Textarea } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Comment from "./Comment";
 
 const CommentSection = ({ postId }) => {
@@ -54,6 +54,36 @@ const CommentSection = ({ postId }) => {
 
     getComments();
   }, [postId]);
+
+  const handleLikeComment = async (commentId) => {
+    try {
+      if (!currentUser) {
+        navigate("/sign-in");
+        return;
+      }
+
+      const res = await fetch(`/api/comment/likeComment/${commentId}`, {
+        method: "PUT",
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setComments(
+          comments.map((comment) =>
+            comment._id === commentId
+              ? {
+                  ...comment,
+                  likes: data.likes,
+                  noOfLikes: data.noOfLikes,
+                }
+              : comment
+          )
+        );
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   return (
     <div className="sm:max-w-2xl w-full mx-auto ">
@@ -116,8 +146,12 @@ const CommentSection = ({ postId }) => {
         <p className=" text-sm mt-6 mb-3">{`Comments (${comments.length})`}</p>
       )}
 
-      {comments.map((comment) => (
-        <Comment key={comment._id} comment={comment} />
+      {comments.map((postComment) => (
+        <Comment
+          key={comment._id}
+          comment={postComment}
+          onLike={handleLikeComment}
+        />
       ))}
     </div>
   );
