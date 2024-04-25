@@ -93,7 +93,7 @@ const SignUp = () => {
                 id="password"
                 onChange={handleChange}
               />
-              <p className=" text-[0.7rem] ">
+              <p className=" text-[0.6rem] text-gray-500 ">
                 Password must contain at least 8 characters. at least 1
                 Uppercase, 1 Lowercase & 1 number
               </p>

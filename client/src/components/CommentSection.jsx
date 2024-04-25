@@ -85,6 +85,15 @@ const CommentSection = ({ postId }) => {
     }
   };
 
+  // to effect the change on the ui
+  const handleEdit = (comment, editedContent) => {
+    setComments(
+      comments.map((c) =>
+        c._id === comment._id ? { ...comment, content: editedContent } : c
+      )
+    );
+  };
+
   return (
     <div className="sm:max-w-2xl w-full mx-auto ">
       {currentUser ? (
@@ -151,6 +160,7 @@ const CommentSection = ({ postId }) => {
           key={comment._id}
           comment={postComment}
           onLike={handleLikeComment}
+          onEdit={handleEdit}
         />
       ))}
     </div>
