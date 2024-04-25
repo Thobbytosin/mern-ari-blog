@@ -1,18 +1,20 @@
 import { Alert, Button, Textarea } from "flowbite-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import Comment from "./Comment";
 
 const CommentSection = ({ postId }) => {
   const { currentUser } = useSelector((state) => state.user);
   const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
   const [commentError, setCommentError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // if (comment.length > 200) {
-    //   return;
-    // }
+    if (comment.length > 200) {
+      return;
+    }
     try {
       const res = await fetch("/api/comment/create", {
         method: "POST",
@@ -30,11 +32,28 @@ const CommentSection = ({ postId }) => {
       if (res.ok) {
         setComment("");
         setCommentError(null);
+        setComments([data, ...comments]);
       }
     } catch (error) {
       setCommentError(error.message);
     }
   };
+
+  useEffect(() => {
+    const getComments = async () => {
+      try {
+        const res = await fetch(`/api/comment/getPostComments/${postId}`);
+        if (res.ok) {
+          const data = await res.json();
+          setComments(data);
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+
+    getComments();
+  }, [postId]);
 
   return (
     <div className="sm:max-w-2xl w-full mx-auto ">
@@ -91,6 +110,15 @@ const CommentSection = ({ postId }) => {
         </form>
       )}
       {commentError && <Alert color="failure">{commentError}</Alert>}
+      {comments.length === 0 ? (
+        <p className=" text-sm mt-6 mb-3">No comments yet</p>
+      ) : (
+        <p className=" text-sm mt-6 mb-3">{`Comments (${comments.length})`}</p>
+      )}
+
+      {comments.map((comment) => (
+        <Comment key={comment._id} comment={comment} />
+      ))}
     </div>
   );
 };

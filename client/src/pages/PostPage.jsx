@@ -77,7 +77,7 @@ const PostPage = () => {
         <CallToAction />
       </div>
 
-      <CommentSection postId={post._id} />
+      <CommentSection postId={post && post._id} />
     </div>
   );
 };
