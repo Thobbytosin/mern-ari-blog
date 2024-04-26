@@ -8,6 +8,7 @@ import {
   HiOutlineExclamationCircle,
   HiDocumentText,
   HiOutlineUserGroup,
+  HiAnnotation,
 } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
 import { signOutSuccess } from "../redux/user/userSlice";
@@ -61,6 +62,17 @@ const DashSidebar = () => {
               </Sidebar.Item>
             </Link>
             {currentUser.isAdmin && (
+              <Link to={"/dashboard?tab=users"}>
+                <Sidebar.Item
+                  active={tab === "users"}
+                  icon={HiOutlineUserGroup}
+                  as="div"
+                >
+                  Users
+                </Sidebar.Item>
+              </Link>
+            )}
+            {currentUser.isAdmin && (
               <Link to={"/dashboard?tab=posts"}>
                 <Sidebar.Item
                   active={tab === "posts"}
@@ -72,13 +84,13 @@ const DashSidebar = () => {
               </Link>
             )}
             {currentUser.isAdmin && (
-              <Link to={"/dashboard?tab=users"}>
+              <Link to={"/dashboard?tab=comments"}>
                 <Sidebar.Item
-                  active={tab === "users"}
-                  icon={HiOutlineUserGroup}
+                  active={tab === "comments"}
+                  icon={HiAnnotation}
                   as="div"
                 >
-                  Users
+                  Comments
                 </Sidebar.Item>
               </Link>
             )}

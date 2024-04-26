@@ -96,7 +96,7 @@ const PostPage = () => {
 
       <div className=" w-full pt-7 border-t border-gray-300">
         <h2 className=" text-2xl text-center">Recent Articles</h2>
-        <div className=" flex gap-4 justify-center my-3">
+        <div className=" flex md:flex-row flex-col gap-4 justify-center my-3">
           {recentPosts.map((post) => (
             <PostCard key={post._id} post={post} />
           ))}

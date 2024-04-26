@@ -5,6 +5,7 @@ import DashProfile from "../components/DashProfile";
 import styles from "../styles";
 import DashPosts from "../components/DashPosts";
 import DashUsers from "../components/DashUsers";
+import DashComments from "../components/DashComments";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -25,8 +26,9 @@ const Dashboard = () => {
       </div>
       <div className="mx-auto w-full">
         {tab === "profile" && <DashProfile />}
-        {tab === "posts" && <DashPosts />}
         {tab === "users" && <DashUsers />}
+        {tab === "posts" && <DashPosts />}
+        {tab === "comments" && <DashComments />}
       </div>
     </div>
   );
