@@ -9,24 +9,25 @@ export const test = (req, res) => {
 };
 
 export const update = async (req, res, next) => {
-  const hasLowercaseLetter = () => !!req.body.password.match(/[a-z]/);
-  const hasUppercaseLetter = () => !!req.body.password.match(/[a-z]/);
-  const hasNumber = () => !!req.body.password.match(/[0-9]/);
-
-  // Password Test
-  const passwordIsArbitrarilyStrongEnough =
-    hasNumber(req.body.password) &&
-    hasUppercaseLetter(req.body.password) &&
-    hasLowercaseLetter(req.body.password);
-
   if (req.user.id !== req.params.userId)
     return next(errorHandler(403, "You are not allowed to update this user"));
+
   if (req.body.password) {
     if (req.body.password.length < 8)
       return next(errorHandler(400, "Password must be at least 8 characters"));
     req.body.password = bcryptjs.hashSync(req.body.password, 10);
   }
+
   if (req.body.password) {
+    const hasLowercaseLetter = () => !!req.body.password.match(/[a-z]/);
+    const hasUppercaseLetter = () => !!req.body.password.match(/[a-z]/);
+    // const hasNumber = () => !!req.body.password.match(/[0-9]/);
+
+    // Password Test
+    const passwordIsArbitrarilyStrongEnough =
+      // hasNumber(req.body.password) &&
+      hasUppercaseLetter(req.body.password) &&
+      hasLowercaseLetter(req.body.password);
     if (!passwordIsArbitrarilyStrongEnough)
       return next(
         errorHandler(

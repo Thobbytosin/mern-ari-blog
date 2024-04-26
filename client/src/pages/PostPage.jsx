@@ -4,12 +4,16 @@ import { Button, Spinner } from "flowbite-react";
 import styles from "../styles";
 import CallToAction from "../components/CallToAction";
 import CommentSection from "../components/CommentSection";
+import PostCard from "../components/PostCard";
 
 const PostPage = () => {
   const { postSlug } = useParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [post, setPost] = useState(null);
+  const [recentPosts, setRecentPosts] = useState([]);
+  const [recentPosts2, setRecentPosts2] = useState([]);
+  const [postLimit, setPostLimit] = useState(3);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -17,7 +21,6 @@ const PostPage = () => {
         setLoading(true);
         const res = await fetch(`/api/post/getPost?slug=${postSlug}`);
         const data = await res.json();
-        // console.log(data);
         if (!res.ok) {
           setError(true);
           setLoading(false);
@@ -36,6 +39,18 @@ const PostPage = () => {
 
     fetchPost();
   }, [postSlug]);
+
+  useEffect(() => {
+    const fetchRecentPosts = async () => {
+      const res = await fetch(`/api/post/getPost?limit=3`);
+      if (res.ok) {
+        const data = await res.json();
+        setRecentPosts(data.posts);
+      }
+    };
+
+    fetchRecentPosts();
+  }, []);
 
   if (loading)
     return (
@@ -78,6 +93,15 @@ const PostPage = () => {
       </div>
 
       <CommentSection postId={post && post._id} />
+
+      <div className=" w-full pt-7 border-t border-gray-300">
+        <h2 className=" text-2xl text-center">Recent Articles</h2>
+        <div className=" flex gap-4 justify-center my-3">
+          {recentPosts.map((post) => (
+            <PostCard key={post._id} post={post} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

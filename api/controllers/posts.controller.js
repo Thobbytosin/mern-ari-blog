@@ -95,11 +95,6 @@ export const updatePost = async (req, res, next) => {
           category: req.body.category,
           image: req.body.image,
           content: req.body.content,
-          slug: req.body.title
-            .split(" ")
-            .join("-")
-            .toLowerCase()
-            .replace(/[^a-zA-Z0-9-]/g, ""),
         },
       },
       { new: true }
