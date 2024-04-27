@@ -94,7 +94,7 @@ const PostPage = () => {
 
       <CommentSection postId={post && post._id} />
 
-      <div className=" w-full pt-7 border-t border-gray-300">
+      <div className=" w-full mt-20">
         <h2 className=" text-2xl text-center">Recent Articles</h2>
         <div className=" flex md:flex-row flex-col gap-4 justify-center my-3">
           {recentPosts.map((post) => (

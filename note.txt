@@ -10,6 +10,13 @@ git commit -m "[notes]"
 * authenticate users with jwt(npm i jsonwebtoken)
 * react-quill for rich text editor
 
+// let arr = [1, 2, 3, 4, 5, 6];
+  // console.log(arr);
+  // const findIndex = arr.indexOf(8);
+  // console.log(findIndex);
+  // const remove = arr.splice(findIndex, 1);
+  // console.log(arr);
+
 SORTING
 const points = [40, 100, 1, 5, 25, 10];
   points.sort(function (a, b) {
@@ -77,3 +84,4 @@ SECTIONS
 ** Tailwind line clamp
 64. ADD COMMENT SECTIONS TO ADMIN DASHBOARD
 65. ADD DASHBOARD OVERVIEW TO ADMIN DASHBOARD
+66. COMPLETE HOME PAGE

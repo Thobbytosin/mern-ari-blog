@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const PostCard = ({ post }) => {
   return (
-    <div className=" h-[240px] w-full flex flex-col justify-between border border-gray-500 rounded-xl overflow-clip ">
+    <div className=" h-[240px] w-[300px] flex flex-col justify-between border border-gray-500 rounded-xl overflow-clip ">
       <img
         src={post.image}
         alt="blog_image"
