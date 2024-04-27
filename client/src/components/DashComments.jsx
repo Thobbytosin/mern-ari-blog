@@ -42,7 +42,7 @@ const DashComments = () => {
       const data = await res.json();
 
       if (res.ok) {
-        setComments((prev) => [...prev, data.comments]);
+        setComments((prev) => [...prev, ...data.comments]);
         if (data.comments.length < 9) {
           setShowMore(false);
         }
@@ -61,7 +61,6 @@ const DashComments = () => {
       const data = await res.json();
 
       if (!res.ok) {
-        console.log(data.message);
         setUserDeleted(false);
       } else {
         setUserDeleted(data);

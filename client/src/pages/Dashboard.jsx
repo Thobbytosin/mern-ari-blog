@@ -6,6 +6,7 @@ import styles from "../styles";
 import DashPosts from "../components/DashPosts";
 import DashUsers from "../components/DashUsers";
 import DashComments from "../components/DashComments";
+import DashboardOverview from "../components/DashboardOverview";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -18,17 +19,18 @@ const Dashboard = () => {
   }, [location.search]);
   return (
     <div
-      className={`${styles.padding} min-h-screen  flex flex-col gap-8 md:flex-row mb-10`}
+      className={`${styles.padding} min-h-screen  flex flex-col gap-8 md:flex-row mb-10 font-poppins `}
     >
       <div className="mb-4 sm:mb-0">
         {/* DASH SIDEBAR */}
         <DashSidebar />
       </div>
-      <div className="mx-auto w-full">
+      <div className="min-h-screen w-full  overflow-clip ">
         {tab === "profile" && <DashProfile />}
         {tab === "users" && <DashUsers />}
         {tab === "posts" && <DashPosts />}
         {tab === "comments" && <DashComments />}
+        {tab === "dashboard" && <DashboardOverview />}
       </div>
     </div>
   );
